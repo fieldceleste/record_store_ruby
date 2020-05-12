@@ -79,5 +79,17 @@ describe '#Album' do
       expect(Album.sort).to(eq([album2,album]))
     end
   end
+  
+  describe("#sold") do
+    it("will show that an album is sold") do
+      album1 = Album.new("Giant Steps", nil)
+      album1.save()
+      album2 = Album.new("Blue", nil)
+      album2.save()
+      album1.sold()
+      expect(Album.all).to(eq([album2]))
+    end
+  end
 end
+
 

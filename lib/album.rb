@@ -3,7 +3,8 @@ class Album
   attr_reader :id, :name #Our new save method will need reader methods.
   attr_accessor :name
   @@albums = {}
-  @@total_rows = 0 # We've added a class variable to keep track of total rows and increment the value when an ALbum is added.
+  @@total_rows = 0
+  @@sold_albums = {} # We've added a class variable to keep track of total rows and increment the value when an ALbum is added.
 
   def initialize(name,id)# We've added id as a second parameter.
     @name = name
@@ -41,8 +42,12 @@ class Album
   end
 
   def self.sort()
-    puts "this is my put -----------#{@@albums.values()}---------------------------"
-    
-    @@albums.values().sort_by(&:name)
+     @@albums.values().sort_by(&:name)
+  end
+   
+  def sold
+
+    @@sold_albums[self.id] == @@albums[self.id]
+    @@albums.delete(self.id)
   end
 end

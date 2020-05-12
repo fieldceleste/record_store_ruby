@@ -1,6 +1,9 @@
 
-<h3>Available Records<h3>
+<h3>Available Records</h3>
 
+<h1>All Sales Vinyl</h1>
+
+<h3>Current Albums:</h3>
 <% if @albums.any? %>
 <ul>
   <% @albums.each do |album| %>
@@ -10,8 +13,8 @@
 <% else %> 
   <p>There are currently no records to display.</p>
 <% end %>
-
 <a href="/albums/new">Add a new album</a>
+
 
 <form action="/albums">
   <div class="form-group">
@@ -22,14 +25,14 @@
 </form>
 </div>
 
-<h3>Sold albums></h3>
+<h3>Sold albums</h3>
 
 <% if @albums.any? %>
 <ul>
-  <% @albums.each do |album| %>
-    <li><a href="/sold/<%= album.id %>"><%= album.name %></a></li>
+  <% @albums.select { |album| album.sold_albums}.each do |album|%> 
+    <li><%= album.name %></li>
   <% end %>
-  </ul>
+</ul>
 <% else %> 
-  <p>There are currently no records to display.</p>
+  <p>There are currently no sold albums to display.</p>
 <% end %>

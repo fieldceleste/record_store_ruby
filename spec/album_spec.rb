@@ -1,10 +1,17 @@
 require 'rspec'
 require 'album'
+require 'pry'
 
 describe '#Album' do
 
   before(:each) do
     Album.clear()
+  end
+
+  describe('.all') do
+    it("returns an empty array when there are no albums") do
+      expect(Album.all).to(eq([]))
+    end
   end
 
   describe('#save') do
@@ -14,12 +21,6 @@ describe '#Album' do
       album2 = Album.new("Blue", nil)
       album2.save()
       expect(Album.all).to(eq([album, album2]))
-    end
-  end
-
-  describe('.all') do
-    it("returns an empty array when there are no albums") do
-      expect(Album.all).to(eq([]))
     end
   end
 
@@ -82,23 +83,24 @@ describe '#Album' do
   
   describe("#sold") do
     it("will show that an album is sold") do
-      album1 = Album.new("Giant Steps", nil)
-      album1.save()
+      album = Album.new("Giant Steps", nil)
+      album.save()
       album2 = Album.new("Blue", nil)
       album2.save()
-      album1.sold()
+      album.sold()
+      album.delete
       expect(Album.all).to(eq([album2]))
     end
   end
   
-  describe("#all_sold") do
+  describe("#sold") do
     it("it will show all sold albums") do
-      album1 = Album.new("Giant Steps", nil)
-      album1.save()
+      album = Album.new("Giant Steps", nil)
+      album.save()
       album2 = Album.new("Blue", nil)
       album2.save()
-      album1.sold()
-      expect(Album.all_sold).to(eq([album1]))
+      album.sold()
+      expect(album.sold).to(eq(true))
     end
   end
 end

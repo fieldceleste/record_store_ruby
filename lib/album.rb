@@ -1,23 +1,25 @@
+require 'pry'
+
 class Album
 
-  attr_reader :id, :name #Our new save method will need reader methods.
-  attr_accessor :name
+  attr_reader :id, :name 
+  attr_accessor :name, :sold_albums
   @@albums = {}
   @@total_rows = 0
-  @@sold_albums = {} # We've added a class variable to keep track of total rows and increment the value when an ALbum is added.
 
-  def initialize(name,id)# We've added id as a second parameter.
+  def initialize(name,id)
     @name = name
-    @id = id || @@total_rows += 1  # We've added code to handle the id.
+    @id = id || @@total_rows += 1 
+    @sold_albums = false 
   end
 
   def self.all
     @@albums.values()
   end
 
-  def self.all_sold
-    @@sold_albums.values()
-  end
+  # def self.all_sold
+  #   @@sold_albums.values()
+  # end
     
   def save
     @@albums[self.id] = Album.new(self.name, self.id)
@@ -36,21 +38,26 @@ class Album
     @@albums[id]
   end
 
+  def self.search(search)
+    @@albums.values().select {|a| a.name.match(/#{search}/i)}
+  end 
+
   def update(name)
     self.name = name
     @@albums[self.id] = Album.new(self.name, self.id)
   end
 
-  def delete()
-    @@albums.delete(self.id)
-  end
-
   def self.sort()
      @@albums.values().sort_by(&:name)
   end
+
+  def delete()
+    @@albums.delete(self.id)
+  end
    
   def sold
-    @@sold_albums[self.id] = @@albums[self.id]
-    @@albums.delete(self.id)
+    @@albums[self.id].sold_albums = true
+    # @@sold_albums[self.id] = @@albums[self.id]
+    # @@albums.delete(self.id)
   end
 end

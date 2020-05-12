@@ -6,7 +6,7 @@ also_reload('lib/**/*.rb')
 
 get('/') do
   @albums = Album.all
-  erb(:albums) #erb file name
+  erb(:albums) 
 end
 
 get('/albums') do
@@ -18,13 +18,23 @@ get('/albums/new') do
   erb(:new_album)
 end
 
+get('/albums/search') do
+  user_search = params[:search]
+  @search = Album.search(user_search)
+  erb(:search)
+end
+
 get('/albums/:id') do
   @album = Album.find(params[:id].to_i())
-  erb(:album)
+  if params["_method"]
+    @album.sold
+    @albums = Album.all
+    erb(:albums)
+  else
+    # puts params
+    erb(:album)
+  end
 end
-# get('/albums/:id') do
-#   "This route will show a specific album based on its ID. The value of ID here is #{params[:id]}."
-# end
 
 post('/albums') do
   name = params[:album_name]
@@ -34,10 +44,6 @@ post('/albums') do
   erb(:albums)
 end
 
-# post('/albums') do
-#   "This route will add an album to our list of albums. We can't access this by typing in the URL. In a future lesson, we will use a form that specifies a POST action to reach this route."
-# end
-
 get('/albums/:id/edit') do
   @album = Album.find(params[:id].to_i())
   erb(:edit_album)
@@ -45,11 +51,12 @@ end
 
 patch('/albums/:id') do
   @album = Album.find(params[:id].to_i())
+  @sold_albums = @albums.sold()
   @album.update(params[:name])
   @albums = Album.all
   erb(:albums)
 end
-
+ 
 delete('/albums/:id') do
   @album = Album.find(params[:id].to_i())
   @album.delete()
@@ -63,20 +70,3 @@ end
   @albums = Albums.all
   erb(:albums)
 end
-#  ///---Buy method
-#  patch('/albums/:id') do 
-#    @album = Album.find(params[:id].to_i())
-#    @album.buy(params[:name])
-#    @albums = Album.all
-#    erb(:albums)
-# end
-
-
-
-
-
-
-
-#     get('/custom_route') do
-#   "We can even create custom routes, but we should only do this when needed."
-# end

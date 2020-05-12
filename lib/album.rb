@@ -39,4 +39,10 @@ class Album
   def delete()
     @@albums.delete(self.id)
   end
+
+  def self.sort()
+    puts "this is my put -----------#{@@albums.values()}---------------------------"
+    
+    @@albums.values().sort_by(&:name)
+  end
 end

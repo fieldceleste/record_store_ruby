@@ -57,6 +57,16 @@ delete('/albums/:id') do
   erb(:albums)
 end
 
+ get('/albums/:id') do 
+  @album = Album.find(params[:id].to_i())
+  @album.sort()
+  @albums = Albums.all
+  erb(:albums)
+end
+
+
+
+
 get('/custom_route') do
   "We can even create custom routes, but we should only do this when needed."
 end

@@ -15,6 +15,10 @@ class Album
     @@albums.values()
   end
 
+  def self.all_sold
+    @@sold_albums.values()
+  end
+    
   def save
     @@albums[self.id] = Album.new(self.name, self.id)
   end
@@ -46,8 +50,7 @@ class Album
   end
    
   def sold
-
-    @@sold_albums[self.id] == @@albums[self.id]
+    @@sold_albums[self.id] = @@albums[self.id]
     @@albums.delete(self.id)
   end
 end

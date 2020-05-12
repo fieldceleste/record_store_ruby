@@ -63,10 +63,20 @@ end
   @albums = Albums.all
   erb(:albums)
 end
+#  ///---Buy method
+#  patch('/albums/:id') do 
+#    @album = Album.find(params[:id].to_i())
+#    @album.buy(params[:name])
+#    @albums = Album.all
+#    erb(:albums)
+# end
 
 
 
 
-get('/custom_route') do
-  "We can even create custom routes, but we should only do this when needed."
-end
+
+
+
+#     get('/custom_route') do
+#   "We can even create custom routes, but we should only do this when needed."
+# end

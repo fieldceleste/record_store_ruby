@@ -90,6 +90,17 @@ describe '#Album' do
       expect(Album.all).to(eq([album2]))
     end
   end
+  
+  describe("#all_sold") do
+    it("it will show all sold albums") do
+      album1 = Album.new("Giant Steps", nil)
+      album1.save()
+      album2 = Album.new("Blue", nil)
+      album2.save()
+      album1.sold()
+      expect(Album.all_sold).to(eq([album1]))
+    end
+  end
 end
 
 

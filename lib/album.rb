@@ -3,26 +3,27 @@ require 'pry'
 class Album
 
   attr_reader :id, :name 
-  attr_accessor :name, :sold_albums
+  attr_accessor :name, :sold_albums, :year, :genre, :artist
   @@albums = {}
   @@total_rows = 0
+  
 
-  def initialize(name,id)
+  def initialize(name, id, year, genre, artist)
     @name = name
     @id = id || @@total_rows += 1 
+    @year = year.to_i
+    @genre = genre
+    @artist = artist
     @sold_albums = false 
+   
   end
 
   def self.all
     @@albums.values()
   end
-
-  # def self.all_sold
-  #   @@sold_albums.values()
-  # end
     
   def save
-    @@albums[self.id] = Album.new(self.name, self.id)
+    @@albums[self.id] = Album.new(self.name, self.id, self.year, self.genre, self.artist)
   end
 
   def ==(album_to_compare)
@@ -38,13 +39,16 @@ class Album
     @@albums[id]
   end
 
-  def self.search(search)
-    @@albums.values().select {|a| a.name.match(/#{search}/i)}
-  end 
+  # def self.search(search)
+  #   @@albums.values().select {|a| a.name.match(/#{search}/i)}
+  # end 
 
-  def update(name)
+  def update(name, year, genre, artist)
     self.name = name
-    @@albums[self.id] = Album.new(self.name, self.id)
+    self.year = year.to_i
+    self.genre = genre
+    self.artist = artist
+    @@albums[self.id] = Album.new(self.name, self.id, self.year, self.genre, self.artist )
   end
 
   def self.sort()
@@ -57,7 +61,9 @@ class Album
    
   def sold
     @@albums[self.id].sold_albums = true
-    # @@sold_albums[self.id] = @@albums[self.id]
-    # @@albums.delete(self.id)
+  end
+  
+  def songs
+    Song.find_by_album(self.id)
   end
 end

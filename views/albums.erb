@@ -5,10 +5,10 @@
 
 <h3>Current Albums:</h3>
 <% if @albums.any? %>
-<ul>
-  <% @albums.each do |album| %>
-    <li><a href="/albums/<%= album.id %>"><%= album.name %></a></li>
-  <% end %>
+  <ul>
+    <% @albums.each do |album| %>
+      <li><a href="/albums/<%= album.id %>"><%= album.name %> by: <%= album.artist %></a></li>
+    <% end %>
   </ul>
 <% else %> 
   <p>There are currently no records to display.</p>

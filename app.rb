@@ -1,8 +1,11 @@
 require('sinatra')
 require('sinatra/reloader')
 require('./lib/album')
+require('./lib/song')
 require('pry')
 also_reload('lib/**/*.rb')
+
+set :port, 5000
 
 get('/') do
   @albums = Album.all
@@ -18,11 +21,11 @@ get('/albums/new') do
   erb(:new_album)
 end
 
-get('/albums/search') do
-  user_search = params[:search]
-  @search = Album.search(user_search)
-  erb(:search)
-end
+# get('/albums/search') do
+#   user_search = params[:search]
+#   @search = Album.search(user_search)
+#   erb(:search)
+# end
 
 get('/albums/:id') do
   @album = Album.find(params[:id].to_i())
@@ -38,7 +41,11 @@ end
 
 post('/albums') do
   name = params[:album_name]
-  album = Album.new(name, nil)
+  year = params[:album_year]
+  genre = params[:album_genre]
+  artist = params[:album_artist]
+  album = Album.new(name, nil, year, genre, artist)
+  # @album.update(params[:album_name], params[:album_year], params[:album_genre], params[:album_artist])
   album.save()
   @albums = Album.all()
   erb(:albums)
@@ -51,8 +58,8 @@ end
 
 patch('/albums/:id') do
   @album = Album.find(params[:id].to_i())
-  @sold_albums = @albums.sold()
-  @album.update(params[:name])
+  @sold_albums = @album.sold()
+  @album.update(params[:name], params[:album_year], params[:album_genre], params[:album_artist])
   @albums = Album.all
   erb(:albums)
 end
@@ -69,4 +76,35 @@ end
   @album.sort()
   @albums = Albums.all
   erb(:albums)
+end
+
+get('/albums/:id/songs/:song_id') do
+  @song = Song.find(params[:song_id].to_i())
+  erb(:song)
+end
+
+# ///----Songs---------------------------------------------->
+
+# Post a new song. After the song is added, Sinatra will route to the view for the album the song belongs to.
+post('/albums/:id/songs') do
+  @album = Album.find(params[:id].to_i())
+  song = Song.new(params[:song_name], @album.id, nil)
+  song.save()
+  erb(:album)
+end
+
+# Edit a song and then route back to the album view.
+patch('/albums/:id/songs/:song_id') do
+  @album = Album.find(params[:id].to_i())
+  song = Song.find(params[:song_id].to_i())
+  song.update(params[:name], @album.id)
+  erb(:album)
+end
+
+# Delete a song and then route back to the album view.
+delete('/albums/:id/songs/:song_id') do
+  song = Song.find(params[:song_id].to_i())
+  song.delete
+  @album = Album.find(params[:id].to_i())
+  erb(:album)
 end

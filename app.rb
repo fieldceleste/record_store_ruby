@@ -6,12 +6,12 @@ require('pry')
 also_reload('lib/**/*.rb')
 
 get('/') do
-  @albums = Album.all
+  @albums = Album.sort
   erb(:albums) #erb file name
 end
 
 get('/albums') do
-  @albums = Album.all
+  @albums = Album.sort
   erb(:albums)
 end
 
@@ -19,25 +19,15 @@ get('/albums/new') do
   erb(:new_album)
 end
 
-get('/albums/search') do
-  @albums = Album.search(params[:search])
-  erb(:search_results)
-end
-
 get('/albums/:id') do
   @album = Album.find(params[:id].to_i())
   erb(:album)
 end
 
-# get('/albums/search') do
-#   @search_result = Album.search(params[:search])
-#   erb(:search_results)
-# end
-
-# patch('/albums/search/') do
-#   @album = Album.search(params[:name])
-#   erb(:albums)
-# end
+get('/albums/search/results') do
+  @albums = Album.search(params[:search])
+  erb(:search_results)
+end
 
 post('/albums') do ## Adds album to list of albums, cannot access in URL bar
   name = params[:album_name]
@@ -51,6 +41,11 @@ post('/albums') do ## Adds album to list of albums, cannot access in URL bar
   @albums = Album.all()
   erb(:albums)
 end
+
+# get('/albums/:id/sort') do
+#   @album = Album.find(params[:id].to_i())
+#   erb(:albums)
+# end
 
 get('/albums/:id/buy') do
   @album = Album.find(params[:id].to_i())
@@ -67,7 +62,7 @@ patch('/albums/:id') do
   @albums = Album.all
   if params[:buy]
     @album.sold()
-  else
+  else  
     @album.update(params[:name])
   end
   erb(:albums)

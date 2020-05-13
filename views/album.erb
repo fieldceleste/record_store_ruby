@@ -6,7 +6,7 @@
   <% if @album.songs %>
     <ul>
     <% @album.songs.each do |song| %>
-    <li><%= song.name %>
+    <li><a href="/albums/<%= @album.id %>/songs/<%=song.id %>"><%= song.name %></a>
     </li>
     <% end %>
   </ul>
@@ -20,7 +20,13 @@
   <div class="form-group">
     <label for="song_name">Song name</label>
     <input id="song_name" name="song_name" class="form-control" type="text">
-    
+
+    <label for="songwriter">Songwriter</label>
+    <input id="songwriter" name="songwriter" class="form-control" type="text">
+
+    <label for="lyrics">Lyrics</label>
+    <input id="lyrics" name="lyrics" class="form-control" type="text">
+
   </div>
   <button type="submit" class="btn">Add song</button>
 </form>

@@ -38,8 +38,7 @@ post('/albums') do ## Adds album to list of albums, cannot access in URL bar
   in_inventory = params[:in_inventory]
   album = Album.new(name, nil, artist, genre, year)
   album.save()
-  @albums = Album.all()
-  erb(:albums)
+  redirect to('/albums')
 end
 
 # get('/albums/:id/sort') do
@@ -71,8 +70,7 @@ end
 delete('/albums/:id') do
   @album = Album.find(params[:id].to_i())
   @album.delete()
-  @albums = Album.all
-  erb(:albums)
+  redirect to('/albums')
 end
 
 # get('/custom_route') do

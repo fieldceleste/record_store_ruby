@@ -2,9 +2,12 @@
 <h3>Available Records<h3>
 
 <% if @albums.any? %>
-<ul>
+  
+  <ul>
   <% @albums.each do |album| %>
+    <% if album.in_inventory == true %>
     <li><a href="/albums/<%= album.id %>"><%= album.name %></a></li>
+    <% end %>
   <% end %>
   </ul>
 <% else %> 
@@ -13,11 +16,11 @@
 
 <a href="/albums/new">Add a new album</a>
 
-<form action="/albums/search" method="get">
+<form action="/albums/search">
+  <%# <input name="_method" type="hidden" value="patch"> %>
   <div class="form-group">
-    <label for="name" >Search!</label>
-    <input id="name" name="name" class="form-control" type="text">
+    <label for="search" >Search!</label>
+    <input id="search" name="search" class="form-control" type="text">
   </div>
   <button type="submit" class="btn">Go!</button>
 </form>
-</div>

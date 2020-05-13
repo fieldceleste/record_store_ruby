@@ -6,7 +6,6 @@ gem('rspec')
 gem('capybara')
 gem('pry')
 
-  
 # source 'https://rubygems.org'
 
 # gem 'rspec'

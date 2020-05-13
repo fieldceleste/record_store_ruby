@@ -6,12 +6,12 @@ require('pry')
 also_reload('lib/**/*.rb')
 
 get('/') do
-  @albums = Album.sort
+  @albums = Album.all
   erb(:albums) #erb file name
 end
 
 get('/albums') do
-  @albums = Album.sort
+  @albums = Album.all
   erb(:albums)
 end
 
@@ -19,15 +19,25 @@ get('/albums/new') do
   erb(:new_album)
 end
 
+get('/albums/search') do
+  @albums = Album.search(params[:search])
+  erb(:search_results)
+end
+
 get('/albums/:id') do
   @album = Album.find(params[:id].to_i())
   erb(:album)
 end
 
-get('/albums/search') do
-  @album = Album.search(params[:name])
-  erb(:search)
-end
+# get('/albums/search') do
+#   @search_result = Album.search(params[:search])
+#   erb(:search_results)
+# end
+
+# patch('/albums/search/') do
+#   @album = Album.search(params[:name])
+#   erb(:albums)
+# end
 
 post('/albums') do ## Adds album to list of albums, cannot access in URL bar
   name = params[:album_name]
@@ -35,23 +45,17 @@ post('/albums') do ## Adds album to list of albums, cannot access in URL bar
   year = params[:album_year]
   genre = params[:album_genre]
   song = params[:song_id]
+  in_inventory = params[:in_inventory]
   album = Album.new(name, nil, artist, genre, year)
   album.save()
   @albums = Album.all()
   erb(:albums)
 end
 
-# get('/albums/:id/buy') do
-#   @album = Album.find(params[:id].to_i())
-#   erb(:buy_album)
-# end
-
-# patch('albums/:id') do 
-#   @album = Album.find(params[:id].to_i())
-#   @album.sold()
-#   @albums = Album.all_sold
-#   erb(:albums)
-# end
+get('/albums/:id/buy') do
+  @album = Album.find(params[:id].to_i())
+  erb(:buy_album)
+end
 
 get('/albums/:id/edit') do
   @album = Album.find(params[:id].to_i())
@@ -60,8 +64,12 @@ end
 
 patch('/albums/:id') do
   @album = Album.find(params[:id].to_i())
-  @album.update(params[:name])
   @albums = Album.all
+  if params[:buy]
+    @album.sold()
+  else
+    @album.update(params[:name])
+  end
   erb(:albums)
 end
 
@@ -72,10 +80,9 @@ delete('/albums/:id') do
   erb(:albums)
 end
 
-get('/custom_route') do
-  "We can even create custom routes, but we should only do this when needed."
-end
-
+# get('/custom_route') do
+#   "We can even create custom routes, but we should only do this when needed."
+# end
 
 # Get the detail for a specific song such as lyrics and songwriters.
 get('/albums/:id/songs/:song_id') do

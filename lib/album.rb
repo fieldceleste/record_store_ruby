@@ -6,7 +6,7 @@ class Album
   attr_accessor :name, :artist, :genre, :year, :in_inventory
   @@albums = {}
   @@total_rows = 0 # We've added a class variable to keep track of total rows and increment the value when an ALbum is added.
-  @@sold_albums = {}
+  # @@sold_albums = {}
 
   def initialize(name, id, artist, genre, year)
     @name = name
@@ -21,9 +21,9 @@ class Album
     @@albums.values()
   end
 
-  def self.all_sold
-    @@sold_albums.values()
-  end
+  # def self.all_sold
+  #   @@sold_albums.values()
+  # end
 
   def save
     @@albums[self.id] = Album.new(self.name, self.id, self.artist, self.genre, self.year)
@@ -57,7 +57,7 @@ class Album
     names = album_names.grep(/#{name}/)
     names.each do |n| 
       display_albums = Album.all.select {|a| a.name == n}
-      result.push(display_albums)
+      result.concat(display_albums)
     end
     result
   end
@@ -69,10 +69,10 @@ class Album
   end
  
   def sold()
-    @@albums[self.id].in_inventory = false
-    @@sold_albums[self.id] = Album.new(self.name, self.id, self.artist, self.genre, self.year)
+    self.in_inventory = false
+    @@albums[self.id] = self
+    # @@sold_albums[self.id] = Album.new(self.name, self.id, self.artist, self.genre, self.year)
   end
-
 
   def songs
     Song.find_by_album(self.id)

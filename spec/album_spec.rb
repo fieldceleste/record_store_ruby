@@ -116,10 +116,11 @@ describe '#Album' do
       album1 = Album.new("Little Giant", nil, "Johnny Griffin", "Jazz", "1959")
       album1.save()
       album2.sold()
+      expect((Album.find(album2.id)).in_inventory).to(eq(false))
       expect(Album.all_sold).to(eq([album2]))
-      expect(Album.all).to(eq([album, album1]))
     end
   end
+
   describe('#songs') do
     it("returns an album's songs") do
       album = Album.new("Giant Steps", nil, "John Coltrane", "Jazz", "1959")

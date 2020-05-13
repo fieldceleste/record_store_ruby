@@ -3,7 +3,7 @@ require 'pry'
 class Album
 
   attr_reader :id #Our new save method will need reader methods.
-  attr_accessor :name, :artist, :genre, :year
+  attr_accessor :name, :artist, :genre, :year, :in_inventory
   @@albums = {}
   @@total_rows = 0 # We've added a class variable to keep track of total rows and increment the value when an ALbum is added.
   @@sold_albums = {}
@@ -14,6 +14,7 @@ class Album
     @artist = artist 
     @genre = genre 
     @year = year
+    @in_inventory = true
   end
 
   def self.all
@@ -68,9 +69,10 @@ class Album
   end
  
   def sold()
+    @@albums[self.id].in_inventory = false
     @@sold_albums[self.id] = Album.new(self.name, self.id, self.artist, self.genre, self.year)
-    @@albums.delete(self.id)
   end
+
 
   def songs
     Song.find_by_album(self.id)

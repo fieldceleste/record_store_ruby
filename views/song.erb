@@ -14,7 +14,7 @@
 </div>
   <button type="submit">Update song</button>
 </form>
-
+<br>
 <form action="/albums/<%= @song.album.id %>/songs/<%= @song.id %>" method="post">
   <input name="_method" type="hidden" value="delete">
 

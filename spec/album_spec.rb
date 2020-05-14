@@ -15,11 +15,17 @@ describe '#Album' do
     end
   end
 
+  describe("#name") do
+    it("returns the name of an album") do
+      album = Album.new("In Rainbows", nil, 2007, "Rock", "Radiohead")
+      expect(album.name()).to(eq("In Rainbows"))
+    end
+  end
   describe('#save') do
     it("saves an album") do
       album = Album.new("Giant Steps", nil, 2000, "rock", "chi")
       album.save()
-      album2 = Album.new("Blue", nil, 2010, "pop", "celeste")
+      album2 = Album.new("Blue", nil, 2010,  "pop", "celeste")
       album2.save()
       expect(Album.all).to(eq([album, album2]))
     end

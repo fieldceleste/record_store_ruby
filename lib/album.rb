@@ -9,7 +9,7 @@ class Album
   
 
   def initialize(name, id, year, genre, artist)
-    @name = name
+    @name = name  
     @id = id || @@total_rows += 1 
     @year = year.to_i
     @genre = genre
@@ -67,3 +67,4 @@ class Album
     Song.find_by_album(self.id)
   end
 end
+

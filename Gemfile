@@ -5,6 +5,7 @@ gem('sinatra-contrib')
 gem('rspec')
 gem('capybara')
 gem('pry')
+gem('pg')
 
 # source 'https://rubygems.org'
 

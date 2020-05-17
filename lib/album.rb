@@ -1,24 +1,36 @@
 require 'pry'
 
 class Album
+  # w10 weekend removed all class variables 
+  # --> deleted weekend homework attr_reader :id #Our new save method will need reader methods.
+  # --> deleted @@albums = {}
+  # --> deleted @@total_rows = 0 # We've added a class variable to keep track of total rows and increment the value when an ALbum is added.
+  # --> deleted @@sold_albums = {}
 
-  attr_reader :id #Our new save method will need reader methods.
   attr_accessor :name, :artist, :genre, :year, :in_inventory
-  @@albums = {}
-  @@total_rows = 0 # We've added a class variable to keep track of total rows and increment the value when an ALbum is added.
-  # @@sold_albums = {}
 
-  def initialize(name, id, artist, genre, year)
-    @name = name
-    @id = id || @@total_rows += 1  # We've added code to handle the id.
-    @artist = artist 
-    @genre = genre 
-    @year = year
+
+  def initialize(attributes)
+    @name = attributes.fetch(:name)
+    @id = attributes.fetch(:id) # We've added code to handle the id.
+    @artist = attributes.fetch(:artist)
+    @genre = attributes.fetch(:genre)
+    @year = attributes.fetch(:year)
     @in_inventory = true
   end
 
   def self.all
-    @@albums.values()
+    returned_albums = DB.exec("SELECT * FROM albums;")
+    albums = []
+    returned_albums.each() do |album|
+      name = album.fetch("name")
+      id = album.fetch("id").to_i
+      artist = album.fetch("artist")
+      genre = album.fetch("genre")
+      year = album.fetch("year")
+      albums.push(Album.new( {:name => name, :id => id, :artist => artist, :genre => genre, :year => year}) )
+    end
+    albums
   end
 
   # def self.all_sold
@@ -26,37 +38,38 @@ class Album
   # end
 
   def save
-    @@albums[self.id] = Album.new(self.name, self.id, self.artist, self.genre, self.year)
+    result = DB.exec("INSERT INTO albums (name) VALUES ('#{@name}') RETURNING id;")
+    @id = result.first().fetch("id").to_i
   end
-
+  
   def ==(album_to_compare)
     self.name() == album_to_compare.name()
   end
 
-  def self.clear
-    @@albums = {}
-    @@total_rows = 0
-  end
+  # def self.clear
+  #   @@albums = {}
+  #   @@total_rows = 0
+  # end
 
-  def self.find(id)
-    @@albums[id]
-  end
+  # def self.find(id)
+  #   @@albums[id]
+  # end
 
   def update(name)
     self.name = name
     @@albums[self.id] = Album.new(self.name, self.id, self.artist, self.genre, self.year)
   end
 
-  def delete()
-    @@albums.delete(self.id)
-  end
+  # def delete()
+  #   @@albums.delete(self.id)
+  # end
 
   def self.search(name)
     album_names = Album.all.map {|a| a.name }
     result = []
     names = album_names.grep(/#{name}/)
     names.each do |n| 
-      display_albums = Album.all.select {|a| a.name == n}
+      display_albums = Album.all.select {|a| a.name.include?(n)}
       result.concat(display_albums)
     end
     result

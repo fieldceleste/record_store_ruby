@@ -26,21 +26,18 @@ describe '#Album' do
       expect(Album.all).to(eq([album]))
     end
   end
+
+  describe('.clear') do
+    it("clears all albums") do
+      album = Album.new({ :name => "Giant Steps", :id => nil, :artist => "John Coltrane", :genre => "Jazz", :year => "1959"})
+      album.save()
+      album2 = Album.new({ :name => "Blue", :id => nil, :artist => "Johnny Giant", :genre => "Jazz", :year => "1959"})
+      album2.save()
+      Album.clear()
+      expect(Album.all).to(eq([]))
+    end
+  end
 end
-
-
-
-#   describe('.clear') do
-#     it("clears all albums") do
-#       album = Album.new("Giant Steps", nil, "John Coltrane", "Jazz", "1959")
-#       album.save()
-#       album2 = Album.new("Blue", nil, "rando", "Folk-Pop", "2003")
-#       album2.save()
-#       Album.clear()
-#       expect(Album.all).to(eq([]))
-#     end
-#   end
-
 
 
 #   describe('.find') do

@@ -46,10 +46,9 @@ class Album
     self.name() == album_to_compare.name()
   end
 
-  # def self.clear
-  #   @@albums = {}
-  #   @@total_rows = 0
-  # end
+  def self.clear
+    DB.exec("DELETE FROM albums *;")
+  end
 
   # def self.find(id)
   #   @@albums[id]

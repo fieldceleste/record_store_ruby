@@ -12,6 +12,7 @@ describe '#Album' do
       expect(album).to(eq(album2))
     end
   end
+
   describe('.all') do
     it("returns an empty array when there are no albums") do
       expect(Album.all).to(eq([]))
@@ -89,6 +90,29 @@ describe '#Album' do
     end
   end
 
+  describe('#songs') do
+    it("returns an album's songs") do
+      album = Album.new({ :name => "Giant Steps", :id => nil, :artist => "John Coltrane", :genre => "Jazz", :year => "1959"})
+      album.save()
+      song = Song.new({:name => "Naima", :album_id => album.id, :id => nil})
+      song.save()
+      expect(album.songs).to(eq([song]))
+    end
+  end
+
+  describe('#delete') do
+    it("deletes all songs belonging to a deleted album") do
+      album = Album.new({ :name => "Giant Steps", :id => nil, :artist => "John Coltrane", :genre => "Jazz", :year => "1959"})
+      album.save()
+      song = Song.new({:name => "Naima", :album_id => album.id, :id => nil})
+      song.save()
+      album.delete()
+      expect(Song.find(song.id)).to(eq(nil))
+    end
+  end
+  
+
+
 end
 
 
@@ -124,16 +148,5 @@ end
 #     end
 #   end
 
-#   describe('#songs') do
-#     it("returns an album's songs") do
-#       album = Album.new("Giant Steps", nil, "John Coltrane", "Jazz", "1959")
-#       album.save()
-#       song = Song.new("Naima", album.id, nil)
-#       song.save()
-#       song2 = Song.new("Cousin Mary", album.id, nil)
-#       song2.save()
-#       expect(album.songs).to(eq([song, song2]))
-#     end
-#   end
-
+  
 # end

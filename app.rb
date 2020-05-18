@@ -8,12 +8,12 @@ DB = PG.connect({:dbname => "record_store"})
 also_reload('lib/**/*.rb')
 
 get('/') do
-  @albums = Album.sort
+  @albums = Album.all
   erb(:albums) #erb file name
 end
 
 get('/albums') do
-  @albums = Album.sort
+  @albums = Album.all
   erb(:albums)
 end
 
@@ -21,6 +21,7 @@ get('/albums/new') do
   erb(:new_album)
 end
 
+#put in if statement here for ID's that no longer exist
 get('/albums/:id') do
   @album = Album.find(params[:id].to_i())
   erb(:album)
@@ -36,9 +37,8 @@ post('/albums') do ## Adds album to list of albums, cannot access in URL bar
   artist = params[:album_artist]
   year = params[:album_year]
   genre = params[:album_genre]
-  song = params[:song_id]
   in_inventory = params[:in_inventory]
-  album = Album.new(name, nil, artist, genre, year)
+  album = Album.new({:name => name, :id => nil, :artist => artist, :genre => genre, :year => year})
   album.save()
   redirect to('/albums')
 end
@@ -88,7 +88,7 @@ end
 # Post a new song. After the song is added, Sinatra will route to the view for the album the song belongs to.
 post('/albums/:id/songs') do
   @album = Album.find(params[:id].to_i())
-  song = Song.new(params[:song_name], @album.id, nil)
+  song = Song.new(:name => params[:song_name], :album_id => @album.id, :id => nil)
   song.save()
   erb(:album)
 end

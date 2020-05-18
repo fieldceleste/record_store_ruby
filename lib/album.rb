@@ -38,7 +38,7 @@ class Album
   # end
 
   def save
-    result = DB.exec("INSERT INTO albums (name) VALUES ('#{@name}') RETURNING id;")
+    result = DB.exec("INSERT INTO albums (name, artist, genre, year) VALUES ('#{@name}', '#{@artist}', '#{@genre}', '#{@year}') RETURNING id;")
     @id = result.first().fetch("id").to_i
   end
   
@@ -67,6 +67,7 @@ class Album
 
   def delete()
     DB.exec("DELETE FROM albums WHERE id = #{@id};")
+    DB.exec("DELETE FROM songs WHERE album_id = #{@id};")
   end
 
   def self.search(name)
@@ -91,6 +92,6 @@ class Album
   # end
 
   def songs
-    Song.find_by_album(self.id)
+    Song.find_by_album(@id)
   end
 end

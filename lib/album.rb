@@ -74,23 +74,21 @@ class Album
     result = []
     names = album_names.grep(/#{name}/)
     names.each do |n| 
-      display_albums = Album.all.select {|a| a.name.include?(n)}
+      display_albums = Album.all.select {|a| a.name == (n)}
       result.concat(display_albums)
     end
     result
   end
 
   def self.sort()
-    record_list = @@albums.values
-    sorted_records = record_list.sort_by{ |record| record.name }
-    sorted_records
+    Album.all.sort_by { |record| record.name }
   end
  
-  def sold()
-    self.in_inventory = false
-    @@albums[self.id] = self
-    # @@sold_albums[self.id] = Album.new(self.name, self.id, self.artist, self.genre, self.year)
-  end
+  # def sold()
+  #   self.in_inventory = false
+  #   @@albums[self.id] = self
+  #   # @@sold_albums[self.id] = Album.new(self.name, self.id, self.artist, self.genre, self.year)
+  # end
 
   def songs
     Song.find_by_album(self.id)

@@ -68,6 +68,16 @@ describe '#Album' do
     end
   end
   
+  describe('.search') do
+    it('will search through all albums and return all albums that contain a matching name') do
+      Album.clear()
+      album = Album.new({ :name => "Giant Steps", :id => nil, :artist => "John Coltrane", :genre => "Jazz", :year => "1959"})
+      album.save()
+      album2 = Album.new({ :name => "Blue", :id => nil, :artist => "Johnny Giant", :genre => "Jazz", :year => "1959"})
+      album2.save()
+      expect(Album.search("Giant")).to(eq([album]))
+    end
+  end
 end
 
 
@@ -85,15 +95,7 @@ end
 #     end
 #   end
 
-#   describe('.search') do
-#     it('will search through all albums and return all albums that contain a matching name') do
-#       album = Album.new("Giant Steps", nil, "John Coltrane", "Jazz", "1959")
-#       album.save()
-#       album1 = Album.new("Little Giant", nil, "Johnny Cash", "Jazz", "1959")
-#       album1.save()
-#       expect(Album.search("Giant")).to(eq([album, album1]))
-#     end
-#   end
+
   
 #   describe('.sort') do
 #     it('will sort all albums alphabetically') do

@@ -78,6 +78,17 @@ describe '#Album' do
       expect(Album.search("Giant")).to(eq([album]))
     end
   end
+
+  describe('.sort') do
+    it('will sort all albums alphabetically') do
+      album = Album.new({ :name => "Giant Steps", :id => nil, :artist => "John Coltrane", :genre => "Jazz", :year => "1959"})
+      album.save()
+      album2 = Album.new({ :name => "Blue", :id => nil, :artist => "Johnny Giant", :genre => "Jazz", :year => "1959"})
+      album2.save()
+      expect(Album.sort()).to(eq([album2, album]))
+    end
+  end
+
 end
 
 
@@ -97,17 +108,6 @@ end
 
 
   
-#   describe('.sort') do
-#     it('will sort all albums alphabetically') do
-#       album = Album.new("Giant Steps", nil, "John Coltrane", "Jazz", "1959")
-#       album.save()
-#       album2 = Album.new("A Big", nil, "Johnny Cash", "Jazz", "1959")
-#       album2.save()
-#       album1 = Album.new("Little Giant", nil, "Johnny Griffin", "Jazz", "1959")
-#       album1.save()
-#       expect(Album.sort()).to(eq([album2, album, album1]))
-#     end
-#   end
 
 #   describe('#sold') do
 #     it('will remove album from Album.all & put into @@sold_albums ') do

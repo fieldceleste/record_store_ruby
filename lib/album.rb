@@ -7,7 +7,7 @@ class Album
   # --> deleted @@total_rows = 0 # We've added a class variable to keep track of total rows and increment the value when an ALbum is added.
   # --> deleted @@sold_albums = {}
 
-  attr_accessor :name, :artist, :genre, :year, :in_inventory
+  attr_accessor :name, :id, :artist, :genre, :year, :in_inventory
 
 
   def initialize(attributes)
@@ -50,9 +50,15 @@ class Album
     DB.exec("DELETE FROM albums *;")
   end
 
-  # def self.find(id)
-  #   @@albums[id]
-  # end
+  def self.find(id)
+    album = DB.exec("SELECT * FROM albums WHERE id = #{id};").first
+    name = album.fetch("name")
+    id = album.fetch("id").to_i
+    artist = album.fetch("artist")
+    genre = album.fetch("genre")
+    year = album.fetch("year")
+    Album.new({:name => name, :id => id, :artist => artist, :genre => genre, :year => year})
+  end
 
   def update(name)
     self.name = name

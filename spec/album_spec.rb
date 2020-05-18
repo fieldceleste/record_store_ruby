@@ -37,19 +37,20 @@ describe '#Album' do
       expect(Album.all).to(eq([]))
     end
   end
+
+  describe('.find') do
+    it("finds an album by id") do
+      album = Album.new({ :name => "Giant Steps", :id => nil, :artist => "John Coltrane", :genre => "Jazz", :year => "1959"})
+      album.save()
+      album2 = Album.new({ :name => "Blue", :id => nil, :artist => "Johnny Giant", :genre => "Jazz", :year => "1959"})
+      album2.save()
+      expect(Album.find(album.id)).to(eq(album))
+    end
+  end
+  
 end
 
 
-#   describe('.find') do
-#     it("finds an album by id") do
-#       album = Album.new("Giant Steps", nil, "John Coltrane", "Jazz", "1959")
-#       album.save()
-#       album2 = Album.new("Blue", nil, "rando", "Folk-Pop", "2003")
-#       album2.save()
-#       expect(Album.find(album.id)).to(eq(album))
-#     end
-#   end
-  
 #   describe('#update') do
 #     it("updates an album by id") do
 #       album = Album.new("Giant Steps", nil, "John Coltrane", "Jazz", "1959")

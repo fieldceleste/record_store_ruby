@@ -56,22 +56,23 @@ describe '#Album' do
       expect(album.name).to(eq("A Love Supreme"))
     end
   end
+
+  describe('#delete') do
+    it("deletes an album by id") do
+      album = Album.new({ :name => "Giant Steps", :id => nil, :artist => "John Coltrane", :genre => "Jazz", :year => "1959"})
+      album.save()
+      album2 = Album.new({ :name => "Blue", :id => nil, :artist => "Johnny Giant", :genre => "Jazz", :year => "1959"})
+      album2.save()
+      album.delete()
+      expect(Album.all).to(eq([album2]))
+    end
+  end
   
 end
 
 
 
 
-#   describe('#delete') do
-#     it("deletes an album by id") do
-#       album = Album.new("Giant Steps", nil, "John Coltrane", "Jazz", "1959")
-#       album.save()
-#       album2 = Album.new("Blue", nil, "rando", "Folk-Pop", "2003")
-#       album2.save()
-#       album.delete()
-#       expect(Album.all).to(eq([album2]))
-#     end
-#   end
 
 #   describe('initialize') do
 #     it('') do

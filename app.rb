@@ -3,8 +3,10 @@ require('sinatra/reloader')
 require('./lib/album')
 require('./lib/song')
 require('pry')
+require("pg")
 also_reload('lib/**/*.rb')
 
+DB = PG.connect({:dbname => "record_store"})
 set :port, 5000
 
 get('/') do
@@ -41,10 +43,10 @@ end
 
 post('/albums') do
   name = params[:album_name]
-  year = params[:album_year]
+  years = params[:album_years]
   genre = params[:album_genre]
   artist = params[:album_artist]
-  album = Album.new(name, nil, year, genre, artist)
+  album = Album.new({:name => name, :id => nil, :years => years, :genre => genre, :artist => artist})
   # @album.update(params[:album_name], params[:album_year], params[:album_genre], params[:album_artist])
   album.save()
   @albums = Album.all()
@@ -87,10 +89,10 @@ end
 # Post a new song. After the song is added, Sinatra will route to the view for the album the song belongs to.
 post('/albums/:id/songs') do
   @album = Album.find(params[:id].to_i())
-  song_name = params[:song_name]
+  song = params[:song_name]
   lyrics = params[:lyrics]
   songwriter = params[:songwriter]
-  song = Song.new(song_name, @album.id, nil, lyrics, songwriter)
+  song = Song.new({:name => song, :lyrics => lyrics, :songwriter => songwriter, :album_id => @album.id, :id => nil})
   song.save()
   #@songs = Song.all
   #@albums = Album.all

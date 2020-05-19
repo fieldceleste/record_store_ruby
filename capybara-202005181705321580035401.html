@@ -17,24 +17,25 @@
 
 <h4>Add a song:</h4>  
 
-<form action="/albums/2/songs" method="post">
+<form action="/albums/196/songs" method="post">
   <div class="form-group">
     <label for="song_name">Song name</label>
     <input id="song_name" name="song_name" class="form-control" type="text">
-    <label for="artist_name">Artist name</label>
-    <input id="artist_name" name="artist_name" class="form-control" type="text">
-    # <label for="genre">genre</label>
-    # <input id="genre" name="genre" class="form-control" type="text">
-    # <label for="year">Recorded year</label>
-    # <input id="year" name="year" class="form-control" type="text">
+
+    <label for="songwriter">Songwriter</label>
+    <input id="songwriter" name="songwriter" class="form-control" type="text">
+
+    <label for="lyrics">Lyrics</label>
+    <input id="lyrics" name="lyrics" class="form-control" type="text">
+
   </div>
   <button type="submit" class="btn">Add song</button>
 </form>
 
-<p><a href="/albums/2/edit">Edit album</a></p>
+<p><a href="/albums/196/edit">Edit album</a></p>
 <p><a href="/albums">Return to album list</a></p>
 
-<form action="/albums/2" method="get">
+<form action="/albums/196" method="get">
   <input name="_method" type="hidden" value="sold">
   <button type="submit" class="btn-default">Buy an album</button>
 </form>
